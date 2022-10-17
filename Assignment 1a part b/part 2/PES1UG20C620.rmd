@@ -1,0 +1,226 @@
+---
+title: "\n**UE20CS631 - Data Analytics**\n\n**Worksheet 1a - Part 2: Exploring Data
+  with R**\n\nSRN - PES1UG20CS620\nNAME - Adarsh Subhas Nayak\nWORKSHEET 1A PART 2\n"
+output:
+  html_document:
+    df_print: paged
+  pdf_document:
+    fig_width: 4
+    fig_height: 4
+  word_document: default
+urlcolor: blue
+editor_options:
+  markdown:
+    wrap: 72
+---
+
+Name: Adarsh S Nayak  
+SRN : PES1UG20CS620
+----
+
+---
+----
+```{r}
+library(tidyverse)
+data<- read_csv("CharlesBookClubDataset.csv")
+data1<-read_csv("CharlesBookClubDataset.csv")
+
+```
+#problem 1  (1 point)
+Generate an understanding of the dataset via a summary of its features.
+Find the count, missing count,minimum, 1st quartile, median, mean, 3rd quartile, max and standard deviation of all relevant columns ,Separately, print the total number of missing values in each column.
+
+```{r}
+summary(data1)
+```
+#missing values in M R and F columns
+```{r}
+print(length(which(is.na(data1$M))))
+print(length(which(is.na(data1$R))))
+print(length(which(is.na(data1$F))))
+```
+#removing Na rows
+```{r}
+data1$M <- ifelse(data1$M=="",NA,data1$M)
+data1$R <- ifelse(data1$R=="",NA,data1$R)
+data1$F <- ifelse(data1$F=="",NA,data1$F)
+
+data1<-na.omit(data1)
+summary(data1)
+
+```
+#finding standard deviation
+```{r}
+sd(data1$M)
+sd(data1$R)
+sd(data1$F)
+
+```
+
+#problem 2 (2 points)
+Replace missing values within the Recency, Frequency, and Monetary features with suitable values. Explain your reasoning behind the method of substitution used. Hint: Try plotting the distribution of the values in each feature using the hist function. Think about how to best deal with data imputation. Also, plot the distribution of feature values after imputation.
+
+#replacing na values with appropriate value
+monetery is replaced with mean
+
+```{r}
+hist(data$M)
+data$M <- ifelse(data$M=="",NA,data$M)
+data$R <- ifelse(data$R=="",NA,data$R)
+data$F <- ifelse(data$F=="",NA,data$F)
+data$M[is.na(data$M)]<- mean(data$M,na.rm =TRUE)
+hist(data$M)
+
+
+```
+#column 2
+```{r}
+hist(data$R)
+```
+
+```{r}
+calcmode <-function(x)
+{
+  distinct_values <- unique(x)
+  distinct_tab<-tabulate(match(x,distinct_values))
+  distinct_values[which.max(distinct_tab)]
+}
+
+data$R <- ifelse(is.na(data$R),calcmode((data$R)),data$R)
+head(data)
+```
+
+```{r}
+hist(data$R)
+```
+#column 3
+```{r}
+hist(data$F)
+data$F <- ifelse(is.na(data$F),calcmode((data$F)),data$F)
+hist(data$F)
+```
+#problem 3
+Discretize the continuous values of Monetary, Recency, and Frequency into appropriate bins, and create three new columns Mcode, Rcode and Fcode respectively, for the discretized values. Explicitly mention the number of bins used and explain the choice for the bin size. Print out the summary of the newly created columns.
+Hint: Use the cut function to break on preset breakpoints. What are the most optimum breakpoints you can choose? Try to think of a statistical function that provides these breakpoints for optimum binning.
+
+
+```{r}
+data$Rnewcol <- cut(data$R, breaks=5)
+data$Mnewcol <- cut(data$M, breaks=5)
+data$Fnewcol <- cut(data$F, breaks=5)
+summary(data)
+```
+### Problem 4
+
+The marketing team heavily relies on the RFM variables of the recency of last purchase, total number of purchases, and total money spent on purchases to gauge the health of the members of the book club. Increases in either the frequency of purchases or monetary spend and decreases in time since last purchase across the customer base, will intuitively lead to more sales for the business.
+
+#### 4.1 Bar Graphs (1 point)
+
+Create and visualize histograms for the discretized Recency, Frequency, Monetary features. Also create one for the `FirstPurch` feature.
+```{r}
+hist(as.numeric(data$Fnewcol))
+hist(as.numeric(data$Mnewcol))
+hist(as.numeric(data$Rnewcol))
+hist(data$FirstPurch)
+```
+
+
+#### 4.3 Density Plot (1 point)
+
+Create and visualize a density plot for Recency, Frequency, Monetary and `FirstPurch` features.
+```{r}
+plot(density(data$M))
+plot(density(data$R))
+plot(density(data$F))
+plot(density(data$FirstPurch))
+```
+# Part II. ANOVA
+
+
+
+## Scenario 1
+
+It's a brand new day in the 99th precinct of the New York Police Department. Lieutenant
+Terrance has had enough of Hitchcock and Scully being useless paper
+pushers and wanted to assign them work to help the investigations; they were assigned the 
+duty of gaining insights from the different types
+of objects in the evidence log of an ongoing investigation focused on the New York Mafia.
+
+
+## Problems
+
+### Problem 1 (2 points)
+
+Captain Holt provided a file containing the names of a few `People of
+Interest` and the number of items logged at various evidence lockers of
+various precincts pertaining to them. He also instructs Peralta and Diaz
+to look into the file as he was told it should contain more information.
+
+Scully decided to use ANOVA.
+
+For this problem, use the data file named `Scenario 1.csv` in the data repository.
+Load the following libraries before moving on and read the dataset,
+```{r}
+library(ggpubr)
+library(dplyr)
+library(ggplot2)
+library(ggpubr)
+library(broom)
+library(car)
+
+data <- read.csv('Scenario 1.csv')
+oneway<- aov(No.of.items ~ POI, data=data)
+summary(oneway)
+```
+
+1.  Consider the dataset. Which type of ANOVA can Scully use? (Justify
+    why the particular test)
+2.  What function(s) could have been used by Scully for ANOVA if he
+    uses the R programming language?
+3.  What does the output of this/these functions tell Scully? (Specify
+    hypotheses and what each column in the summary of the output means
+    considering 5% significance)
+
+### Problem 2 (3 points)
+
+Peralta and Diaz find a member of the family, a certain Frank Pentangeli,
+through Doug Judy. They discovered that the _famiglia_ had altered this
+file resulting in invalid results. The original file was then recovered
+by the squad and was sent to Scully and Hitchcock for analysis. To their
+surprise they discovered that the file also had additional column of
+which gives the priority.
+
+Read the dataset before moving on.
+For this problem, use the data file named `Scenario 2.csv` in the data repository.
+
+```{r}
+data <- read.csv('Scenario 2.csv')
+twoway <- aov(No.of.items ~ POI + Priority, data=data)
+summary(twoway)
+```
+
+1.  Consider the data. Which type of ANOVA can Scully use? (Justify
+    why the particular test)
+2.  What function(s) could have been used by Scully for the ANOVA if he
+    uses the R programming language?
+3.  What does the output of this/these functions tell Scully? (Specify
+    hypotheses and what each column in the summary of the output means
+    considering 5% significance)
+4.  Hitchcock thinks that Scully has missed a task which completes the
+    ANOVA test. What should Scully have thought of? *Hint:* 
+    Philosophically, a hypothesis is a proposition made
+    as a basis for reasoning, without any assumption of its truth. 
+
+### Problem 3 (1 point)
+
+Hitchcock also wanted to compare the number of items collected for each pair
+of Person of Interest and priority. He decided to follow
+the common practice of doing a **Tukey's HSD** . The [Tukey's
+Honestly-Significant-Difference](https://www.real-statistics.com/one-way-analysis-of-variance-anova/unplanned-comparisons/tukey-hsd/)[TukeyHSD] test lets us see which groups are different from one another.
+```{r}
+plot(TukeyHSD(twoway,conf.level = 0.95))
+plot(TukeyHSD(oneway,conf.level = 0.95))
+```
+
+What insights did Hitchcock gain after doing the Tukey's HSD?
+(This test can be done by 'Tukey's HSD' function and the graphical output can be shown using the plot function..-)

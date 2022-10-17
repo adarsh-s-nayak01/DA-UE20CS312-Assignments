@@ -1,0 +1,906 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  colorlinks=true,
+  linkcolor={Maroon},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{PES University, Bangalore
+
+Established under the Karnataka Act No.~16 of 2013}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{\textbf{UE20CS312 - Data Analytics}
+
+\textbf{Worksheet 1a - Part 2: EDA with R \textbar{} ANOVA}
+
+Harshith Mohan Kumar -
+\href{mailto:harshithmohankumar@pesu.pes.edu}{\nolinkurl{harshithmohankumar@pesu.pes.edu}}
+
+Yashas Kadambi -
+\href{mailto:yashasks@pesu.pes.edu}{\nolinkurl{yashasks@pesu.pes.edu}}
+
+Nishanth M S -
+\href{mailto:nishanthmsathish.23@gmail.com}{\nolinkurl{nishanthmsathish.23@gmail.com}}
+
+Anushka Hebbar -
+\href{mailto:anushkahebbar@pesu.pes.edu}{\nolinkurl{anushkahebbar@pesu.pes.edu}}}
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+\maketitle
+
+\hypertarget{prerequisites}{%
+\subsection{Prerequisites}\label{prerequisites}}
+
+To download the data required for this worksheet, visit
+\href{https://tinyurl.com/da22-worksheet1a-part2}{this Github link}.
+This worksheet has two parts, the first focuses on the basics of dealing
+with data and exploratory data analysis using R. The second deals with
+ANOVA. To help guide you through the worksheet, here are a few
+resources:
+
+\begin{itemize}
+\tightlist
+\item
+  Revise how to deal with DataFrames in R
+  \href{https://www.tutorialspoint.com/r/r_data_frames.htm}{here}.
+\item
+  \href{https://r-graphics.org/}{This online book} has everything you
+  need to get started with visualizations in R.
+\item
+  Check out
+  \href{https://joeystanley.com/downloads/171012-ggplot2_handout.pdf}{this}
+  resource for an excellent deep-dive of visualizations using the
+  \texttt{ggplot2} library \textbf{(optional)}.
+\item
+  The following are resources to learn about ANOVA:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \href{https://www.reneshbedre.com/blog/anova.html}{Anova in Python}
+  \item
+    \href{https://www.scribbr.com/statistics/anova-in-r/}{Anova in R}
+  \end{itemize}
+\end{itemize}
+
+\hypertarget{part-i.-exploratory-data-analysis-with-r}{%
+\section{Part I. Exploratory Data Analysis with
+R}\label{part-i.-exploratory-data-analysis-with-r}}
+
+\hypertarget{book-club-marketing-dataset}{%
+\subsection{Book Club Marketing
+Dataset}\label{book-club-marketing-dataset}}
+
+Charles Book Club (CBC) is a book club that has an active database of
+500,000 subscribers. The organization sends out monthly mailings to its
+database of members with the latest promotional offerings. Its marketing
+team would like to see if customer data can be used to reduce the cost
+of marketing activities to improve the profitability of their marketing
+operations. For an initial pilot of a predictive analytics solution, CBC
+decided to focus on its strongest customers and run a marketing test for
+a new book release of \emph{`The Art History of Florence'}.
+
+The dataset provided consists of information about customer purchases
+CBC has as its disposal after conducting the marketing test. Use the
+\texttt{CharlesBookClubDataset.csv} for Part I of the worksheet. This
+data was adapted from a famous business database called the `Charles
+Book Club', dealt with in more detail in a case study from the `Data
+Mining for Business Analytics' book.
+
+\hypertarget{data-dictionary}{%
+\subsubsection{Data Dictionary}\label{data-dictionary}}
+
+\begin{verbatim}
+ID#: Customer Identification number 
+Gender: Male, Female
+M: Monetary - Total money spent on books
+R: Recency - Months since last purchase
+F: Frequency - Total number of purchases
+FirstPurch: Months since first purchase
+ChildBks: Number of purchases from category of child books |
+YouthBks: Number of purchases from category of youth books
+CookBks: Number of purchases from category of cook books
+DoItYBks: Number of purchases from category of DIY books
+RefBks: Number of purchases from category of reference books
+ArtBks: Number of purchases from category of art books
+GeoBks: Number of purchases from category of geography books
+ItalCook: Number of purchases of book title ‘Secrets of Italian Cooking’
+ItalAtlas: Number of purchases of book title ‘Historical Atlas of Italy’
+ItalArt: Number of purchases of book title ‘Italian Art’   
+Related  Purchase: Number of related books purchased
+Florence: = 1 if ‘Art History of Florence’ was purchased; = 0 if not 
+\end{verbatim}
+
+\hypertarget{loading-the-dataset}{%
+\subsubsection{Loading the Dataset}\label{loading-the-dataset}}
+
+Use the following commands to load the dataset from CSV format and get a
+high-level overview of its fields:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\NormalTok{cbc\_df }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(path\_to\_csv)}
+\FunctionTok{head}\NormalTok{(cbc\_df)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{points}{%
+\subsection{Points}\label{points}}
+
+The problems for this part of the worksheet are for a total of 8 points,
+with a non-uniform weightage.
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{Problem 1} : 1 point
+\item
+  \emph{Problem 2} : 2 points
+\item
+  \emph{Problem 3} : 2 points
+\item
+  \emph{Problem 4.1} : 1 point
+\item
+  \emph{Problem 4.2} : 1 point
+\item
+  \emph{Problem 4.3} : 1 point
+\end{itemize}
+
+\hypertarget{problems}{%
+\subsection{Problems}\label{problems}}
+
+\hypertarget{problem-1-1-point}{%
+\subsubsection{Problem 1 (1 point)}\label{problem-1-1-point}}
+
+Generate an understanding of the dataset via a summary of its features.
+Find the count, missing count, minimum, 1st quartile, median, mean, 3rd
+quartile, max and standard deviation of all relevant columns.
+Separately, print the total number of missing values in each column.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## -- Attaching packages --------------------------------------- tidyverse 1.3.2 --
+## v ggplot2 3.3.6     v purrr   0.3.4
+## v tibble  3.1.8     v dplyr   1.0.9
+## v tidyr   1.2.0     v stringr 1.4.1
+## v readr   2.1.2     v forcats 0.5.2
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(readxl)}
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"CharlesBookClubDataset.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## New names:
+## Rows: 4000 Columns: 26
+## -- Column specification
+## -------------------------------------------------------- Delimiter: "," chr
+## (4): Name, Phone_No., Address, Job dbl (22): ...1, Seq#, ID#, Gender, M, R, F,
+## FirstPurch, ChildBks, YouthBks, ...
+## i Use `spec()` to retrieve the full column specification for this data. i
+## Specify the column types or set `show_col_types = FALSE` to quiet this message.
+## * `` -> `...1`
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       ...1             Seq#           ID#            Gender      
+##  Min.   :   0.0   Min.   :   1   Min.   :   25   Min.   :0.0000  
+##  1st Qu.: 999.8   1st Qu.:1001   1st Qu.: 8253   1st Qu.:0.0000  
+##  Median :1999.5   Median :2000   Median :16581   Median :1.0000  
+##  Mean   :1999.5   Mean   :2000   Mean   :16595   Mean   :0.7045  
+##  3rd Qu.:2999.2   3rd Qu.:3000   3rd Qu.:24838   3rd Qu.:1.0000  
+##  Max.   :3999.0   Max.   :4000   Max.   :32977   Max.   :1.0000  
+##                                                                  
+##        M               R               F            FirstPurch   
+##  Min.   : 15.0   Min.   : 2.00   Min.   : 1.000   Min.   : 2.00  
+##  1st Qu.:130.0   1st Qu.: 8.00   1st Qu.: 1.000   1st Qu.:12.00  
+##  Median :208.0   Median :12.00   Median : 2.000   Median :20.00  
+##  Mean   :208.2   Mean   :13.43   Mean   : 3.831   Mean   :26.51  
+##  3rd Qu.:283.0   3rd Qu.:16.00   3rd Qu.: 6.000   3rd Qu.:36.00  
+##  Max.   :479.0   Max.   :36.00   Max.   :12.000   Max.   :99.00  
+##  NA's   :93      NA's   :342     NA's   :218                     
+##     ChildBks         YouthBks         CookBks          DoItYBks     
+##  Min.   :0.0000   Min.   :0.0000   Min.   :0.0000   Min.   :0.0000  
+##  1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:0.0000  
+##  Median :0.0000   Median :0.0000   Median :0.0000   Median :0.0000  
+##  Mean   :0.6398   Mean   :0.3048   Mean   :0.7312   Mean   :0.3508  
+##  3rd Qu.:1.0000   3rd Qu.:0.0000   3rd Qu.:1.0000   3rd Qu.:1.0000  
+##  Max.   :7.0000   Max.   :5.0000   Max.   :7.0000   Max.   :5.0000  
+##                                                                     
+##      RefBks           ArtBks         GeogBks          ItalCook     
+##  Min.   :0.0000   Min.   :0.000   Min.   :0.0000   Min.   :0.0000  
+##  1st Qu.:0.0000   1st Qu.:0.000   1st Qu.:0.0000   1st Qu.:0.0000  
+##  Median :0.0000   Median :0.000   Median :0.0000   Median :0.0000  
+##  Mean   :0.2562   Mean   :0.289   Mean   :0.3875   Mean   :0.1252  
+##  3rd Qu.:0.0000   3rd Qu.:0.000   3rd Qu.:1.0000   3rd Qu.:0.0000  
+##  Max.   :4.0000   Max.   :5.000   Max.   :6.0000   Max.   :3.0000  
+##                                                                    
+##    ItalAtlas         ItalArt           Florence      Related Purchase
+##  Min.   :0.0000   Min.   :0.00000   Min.   :0.0000   Min.   :0.000   
+##  1st Qu.:0.0000   1st Qu.:0.00000   1st Qu.:0.0000   1st Qu.:0.000   
+##  Median :0.0000   Median :0.00000   Median :0.0000   Median :0.000   
+##  Mean   :0.0375   Mean   :0.04575   Mean   :0.0845   Mean   :0.885   
+##  3rd Qu.:0.0000   3rd Qu.:0.00000   3rd Qu.:0.0000   3rd Qu.:1.000   
+##  Max.   :2.0000   Max.   :2.00000   Max.   :1.0000   Max.   :8.000   
+##                                                                      
+##   Yes_Florence     No_Florence         Name            Phone_No.        
+##  Min.   :0.0000   Min.   :0.0000   Length:4000        Length:4000       
+##  1st Qu.:0.0000   1st Qu.:1.0000   Class :character   Class :character  
+##  Median :0.0000   Median :1.0000   Mode  :character   Mode  :character  
+##  Mean   :0.0845   Mean   :0.9155                                        
+##  3rd Qu.:0.0000   3rd Qu.:1.0000                                        
+##  Max.   :1.0000   Max.   :1.0000                                        
+##                                                                         
+##    Address              Job           
+##  Length:4000        Length:4000       
+##  Class :character   Class :character  
+##  Mode  :character   Mode  :character  
+##                                       
+##                                       
+##                                       
+## 
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sapply}\NormalTok{(df,}\ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{sum}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(x)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##             ...1             Seq#              ID#           Gender 
+##                0                0                0                0 
+##                M                R                F       FirstPurch 
+##               93              342              218                0 
+##         ChildBks         YouthBks          CookBks         DoItYBks 
+##                0                0                0                0 
+##           RefBks           ArtBks          GeogBks         ItalCook 
+##                0                0                0                0 
+##        ItalAtlas          ItalArt         Florence Related Purchase 
+##                0                0                0                0 
+##     Yes_Florence      No_Florence             Name        Phone_No. 
+##                0                0                0                0 
+##          Address              Job 
+##                0                0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sapply}\NormalTok{(df, }\ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{sd}\NormalTok{(x))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm =
+## na.rm): NAs introduced by coercion
+
+## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm =
+## na.rm): NAs introduced by coercion
+
+## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm =
+## na.rm): NAs introduced by coercion
+
+## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm =
+## na.rm): NAs introduced by coercion
+\end{verbatim}
+
+\begin{verbatim}
+##             ...1             Seq#              ID#           Gender 
+##     1154.8448669     1154.8448669     9484.4337921        0.4563242 
+##                M                R                F       FirstPurch 
+##               NA               NA               NA       18.3513798 
+##         ChildBks         YouthBks          CookBks         DoItYBks 
+##        0.9943426        0.6119404        1.0894128        0.6879991 
+##           RefBks           ArtBks          GeogBks         ItalCook 
+##        0.5582686        0.6008904        0.7506561        0.3854862 
+##        ItalAtlas          ItalArt         Florence Related Purchase 
+##        0.2147214        0.2206108        0.2781710        1.2262344 
+##     Yes_Florence      No_Florence             Name        Phone_No. 
+##        0.2781710        0.2781710               NA               NA 
+##          Address              Job 
+##               NA               NA
+\end{verbatim}
+
+\hypertarget{problem-2-2-points}{%
+\subsubsection{Problem 2 (2 points)}\label{problem-2-2-points}}
+
+Replace missing values within the Recency, Frequency, and Monetary
+features with suitable values. Explain your reasoning behind the method
+of substitution used. \emph{Hint:} Try plotting the distribution of the
+values in each feature using the \texttt{hist} function. Think about how
+to best deal with data imputation. Also, plot the distribution of
+feature values after imputation.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{rec }\OtherTok{\textless{}{-}}\NormalTok{ df}\SpecialCharTok{$}\NormalTok{R}
+\NormalTok{fre }\OtherTok{\textless{}{-}}\NormalTok{ df}\SpecialCharTok{$}\NormalTok{F}
+\NormalTok{mon }\OtherTok{\textless{}{-}}\NormalTok{ df}\SpecialCharTok{$}\NormalTok{M}
+\FunctionTok{hist}\NormalTok{(rec)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Worksheet_1a_Part2_files/figure-latex/unnamed-chunk-2-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{hist}\NormalTok{(fre)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Worksheet_1a_Part2_files/figure-latex/unnamed-chunk-2-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{hist}\NormalTok{(mon)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Worksheet_1a_Part2_files/figure-latex/unnamed-chunk-2-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df}\SpecialCharTok{$}\NormalTok{M[}\FunctionTok{is.na}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{M)]}\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{M,}\AttributeTok{na.rm=}\ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{df}\SpecialCharTok{$}\NormalTok{F[}\FunctionTok{is.na}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{F)]}\OtherTok{\textless{}{-}} \FunctionTok{median}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{F,}\AttributeTok{na.rm=}\ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{Mode }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x) \{}
+\NormalTok{  ux }\OtherTok{\textless{}{-}} \FunctionTok{unique}\NormalTok{(x)}
+\NormalTok{  ux[}\FunctionTok{which.max}\NormalTok{(}\FunctionTok{tabulate}\NormalTok{(}\FunctionTok{match}\NormalTok{(x, ux)))]}
+\NormalTok{\}}
+\NormalTok{df}\SpecialCharTok{$}\NormalTok{R[}\FunctionTok{is.na}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{R)]}\OtherTok{\textless{}{-}} \FunctionTok{Mode}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{R)}
+\FunctionTok{sapply}\NormalTok{(df,}\ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{sum}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(x)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##             ...1             Seq#              ID#           Gender 
+##                0                0                0                0 
+##                M                R                F       FirstPurch 
+##                0                0                0                0 
+##         ChildBks         YouthBks          CookBks         DoItYBks 
+##                0                0                0                0 
+##           RefBks           ArtBks          GeogBks         ItalCook 
+##                0                0                0                0 
+##        ItalAtlas          ItalArt         Florence Related Purchase 
+##                0                0                0                0 
+##     Yes_Florence      No_Florence             Name        Phone_No. 
+##                0                0                0                0 
+##          Address              Job 
+##                0                0
+\end{verbatim}
+
+\hypertarget{problem-3-2-points}{%
+\subsubsection{Problem 3 (2 points)}\label{problem-3-2-points}}
+
+Discretize the continuous values of Monetary, Recency, and Frequency
+into appropriate bins, and create three new columns \texttt{Mcode},
+\texttt{Rcode} and \texttt{Fcode} respectively, for the discretized
+values. Explicitly mention the number of bins used and explain the
+choice for the bin size. Print out the summary of the newly created
+columns. \emph{Hint:} Use the \texttt{cut} function to break on preset
+breakpoints. What are the most optimum breakpoints you can choose? Try
+to think of a statistical function that provides these breakpoints for
+optimum binning.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df}\SpecialCharTok{$}\NormalTok{Mcode }\OtherTok{\textless{}{-}} \FunctionTok{cut}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{M, }\AttributeTok{breaks=}\DecValTok{5}\NormalTok{)}
+\NormalTok{df}\SpecialCharTok{$}\NormalTok{Fcode }\OtherTok{\textless{}{-}} \FunctionTok{cut}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{F, }\AttributeTok{breaks=}\DecValTok{5}\NormalTok{)}
+\NormalTok{df}\SpecialCharTok{$}\NormalTok{Rcode }\OtherTok{\textless{}{-}} \FunctionTok{cut}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{R, }\AttributeTok{breaks=}\DecValTok{5}\NormalTok{)}
+\FunctionTok{summary}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       ...1             Seq#           ID#            Gender      
+##  Min.   :   0.0   Min.   :   1   Min.   :   25   Min.   :0.0000  
+##  1st Qu.: 999.8   1st Qu.:1001   1st Qu.: 8253   1st Qu.:0.0000  
+##  Median :1999.5   Median :2000   Median :16581   Median :1.0000  
+##  Mean   :1999.5   Mean   :2000   Mean   :16595   Mean   :0.7045  
+##  3rd Qu.:2999.2   3rd Qu.:3000   3rd Qu.:24838   3rd Qu.:1.0000  
+##  Max.   :3999.0   Max.   :4000   Max.   :32977   Max.   :1.0000  
+##        M               R               F            FirstPurch   
+##  Min.   : 15.0   Min.   : 2.00   Min.   : 1.000   Min.   : 2.00  
+##  1st Qu.:131.0   1st Qu.: 8.00   1st Qu.: 1.000   1st Qu.:12.00  
+##  Median :208.2   Median :14.00   Median : 2.000   Median :20.00  
+##  Mean   :208.2   Mean   :13.48   Mean   : 3.731   Mean   :26.51  
+##  3rd Qu.:281.0   3rd Qu.:16.00   3rd Qu.: 6.000   3rd Qu.:36.00  
+##  Max.   :479.0   Max.   :36.00   Max.   :12.000   Max.   :99.00  
+##     ChildBks         YouthBks         CookBks          DoItYBks     
+##  Min.   :0.0000   Min.   :0.0000   Min.   :0.0000   Min.   :0.0000  
+##  1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:0.0000  
+##  Median :0.0000   Median :0.0000   Median :0.0000   Median :0.0000  
+##  Mean   :0.6398   Mean   :0.3048   Mean   :0.7312   Mean   :0.3508  
+##  3rd Qu.:1.0000   3rd Qu.:0.0000   3rd Qu.:1.0000   3rd Qu.:1.0000  
+##  Max.   :7.0000   Max.   :5.0000   Max.   :7.0000   Max.   :5.0000  
+##      RefBks           ArtBks         GeogBks          ItalCook     
+##  Min.   :0.0000   Min.   :0.000   Min.   :0.0000   Min.   :0.0000  
+##  1st Qu.:0.0000   1st Qu.:0.000   1st Qu.:0.0000   1st Qu.:0.0000  
+##  Median :0.0000   Median :0.000   Median :0.0000   Median :0.0000  
+##  Mean   :0.2562   Mean   :0.289   Mean   :0.3875   Mean   :0.1252  
+##  3rd Qu.:0.0000   3rd Qu.:0.000   3rd Qu.:1.0000   3rd Qu.:0.0000  
+##  Max.   :4.0000   Max.   :5.000   Max.   :6.0000   Max.   :3.0000  
+##    ItalAtlas         ItalArt           Florence      Related Purchase
+##  Min.   :0.0000   Min.   :0.00000   Min.   :0.0000   Min.   :0.000   
+##  1st Qu.:0.0000   1st Qu.:0.00000   1st Qu.:0.0000   1st Qu.:0.000   
+##  Median :0.0000   Median :0.00000   Median :0.0000   Median :0.000   
+##  Mean   :0.0375   Mean   :0.04575   Mean   :0.0845   Mean   :0.885   
+##  3rd Qu.:0.0000   3rd Qu.:0.00000   3rd Qu.:0.0000   3rd Qu.:1.000   
+##  Max.   :2.0000   Max.   :2.00000   Max.   :1.0000   Max.   :8.000   
+##   Yes_Florence     No_Florence         Name            Phone_No.        
+##  Min.   :0.0000   Min.   :0.0000   Length:4000        Length:4000       
+##  1st Qu.:0.0000   1st Qu.:1.0000   Class :character   Class :character  
+##  Median :0.0000   Median :1.0000   Mode  :character   Mode  :character  
+##  Mean   :0.0845   Mean   :0.9155                                        
+##  3rd Qu.:0.0000   3rd Qu.:1.0000                                        
+##  Max.   :1.0000   Max.   :1.0000                                        
+##    Address              Job                   Mcode              Fcode     
+##  Length:4000        Length:4000        (14.5,108]: 753   (0.989,3.2]:2690  
+##  Class :character   Class :character   (108,201] :1112   (3.2,5.4]  : 287  
+##  Mode  :character   Mode  :character   (201,293] :1295   (5.4,7.6]  : 287  
+##                                        (293,386] : 660   (7.6,9.8]  : 285  
+##                                        (386,479] : 180   (9.8,12]   : 451  
+##                                                                            
+##          Rcode     
+##  (1.97,8.8] :1059  
+##  (8.8,15.6] :1749  
+##  (15.6,22.4]: 702  
+##  (22.4,29.2]: 205  
+##  (29.2,36]  : 285  
+## 
+\end{verbatim}
+
+\hypertarget{problem-4}{%
+\subsubsection{Problem 4}\label{problem-4}}
+
+The marketing team heavily relies on the RFM variables of the recency of
+last purchase, total number of purchases, and total money spent on
+purchases to gauge the health of the members of the book club. Increases
+in either the frequency of purchases or monetary spend and decreases in
+time since last purchase across the customer base, will intuitively lead
+to more sales for the business.
+
+\hypertarget{bar-graphs-1-point}{%
+\paragraph{4.1 Bar Graphs (1 point)}\label{bar-graphs-1-point}}
+
+Create and visualize histograms for the discretized Recency, Frequency,
+Monetary features. Also create one for the \texttt{FirstPurch} feature.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{hist}\NormalTok{(}\FunctionTok{as.numeric}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{Mcode))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Worksheet_1a_Part2_files/figure-latex/unnamed-chunk-4-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{hist}\NormalTok{(}\FunctionTok{as.numeric}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{Rcode))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Worksheet_1a_Part2_files/figure-latex/unnamed-chunk-4-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{hist}\NormalTok{(}\FunctionTok{as.numeric}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{Fcode))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Worksheet_1a_Part2_files/figure-latex/unnamed-chunk-4-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{hist}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{FirstPurch)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Worksheet_1a_Part2_files/figure-latex/unnamed-chunk-4-4.pdf}
+
+\hypertarget{box-plot-1-point}{%
+\paragraph{4.2 Box Plot (1 point)}\label{box-plot-1-point}}
+
+Transform the \texttt{Florence} variable into a categorical feature that
+can take up the values \texttt{True} or \texttt{False}. Create and
+visualize horizontal box plots for the original Recency, Frequence,
+Monetary and \texttt{FirstPurch} features against the \texttt{Florence}
+variable. \emph{Hint:} To transform \texttt{Florence}, use the concept
+of factors in R and set the labels \texttt{True} and \texttt{False}.
+
+\hypertarget{density-plot-1-point}{%
+\paragraph{4.3 Density Plot (1 point)}\label{density-plot-1-point}}
+
+Create and visualize a density plot for Recency, Frequency, Monetary and
+\texttt{FirstPurch} features.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{density}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{M))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Worksheet_1a_Part2_files/figure-latex/unnamed-chunk-6-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{density}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{R))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Worksheet_1a_Part2_files/figure-latex/unnamed-chunk-6-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{density}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{F))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Worksheet_1a_Part2_files/figure-latex/unnamed-chunk-6-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{density}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{FirstPurch))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Worksheet_1a_Part2_files/figure-latex/unnamed-chunk-6-4.pdf}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{part-ii.-anova}{%
+\section{Part II. ANOVA}\label{part-ii.-anova}}
+
+An Analysis of Variance Test, or ANOVA, can be thought of as a
+generalization of the t-tests for more than 2 groups. The independent
+t-test is used to compare the means of a condition between two groups.
+ANOVA is used when we want to compare the means of a condition between
+more than two groups. ANOVA tests if there is a difference in the mean
+somewhere in the model (testing if there was an overall effect), but it
+does not tell us where the difference is (if there is one). To find
+where the difference is between the groups, we have to conduct post-hoc
+tests.
+
+To perform any tests, we first need to define the null and alternate
+hypothesis:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Null Hypothesis:} There is \emph{no significant difference}
+  among the groups.
+\item
+  \textbf{Alternate Hypothesis:} There is a \emph{significant
+  difference} among the groups.
+\end{itemize}
+
+\hypertarget{points-1}{%
+\subsection{Points}\label{points-1}}
+
+The problems for this part of the worksheet are for a total of 6 points,
+with a non-uniform weightage.
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{Problem 1} : 2 points
+\item
+  \emph{Problem 2} : 3 points
+\item
+  \emph{Problem 3} : 1 point
+\end{itemize}
+
+\hypertarget{scenario-1}{%
+\subsection{Scenario 1}\label{scenario-1}}
+
+It's a brand new day in the 99th precinct of the New York Police
+Department. Lieutenant Terrance has had enough of Hitchcock and Scully
+being useless paper pushers and wanted to assign them work to help the
+investigations; they were assigned the duty of gaining insights from the
+different types of objects in the evidence log of an ongoing
+investigation focused on the New York Mafia.
+
+\hypertarget{problems-1}{%
+\subsection{Problems}\label{problems-1}}
+
+\hypertarget{problem-1-2-points}{%
+\subsubsection{Problem 1 (2 points)}\label{problem-1-2-points}}
+
+Captain Holt provided a file containing the names of a few
+\texttt{People\ of\ Interest} and the number of items logged at various
+evidence lockers of various precincts pertaining to them. He also
+instructs Peralta and Diaz to look into the file as he was told it
+should contain more information.
+
+Scully decided to use ANOVA.
+
+For this problem, use the data file named \texttt{Scenario\ 1.csv} in
+the data repository. Load the following libraries before moving on and
+read the dataset,
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(ggpubr)}
+\FunctionTok{library}\NormalTok{(dplyr)}
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{library}\NormalTok{(ggpubr)}
+\FunctionTok{library}\NormalTok{(broom)}
+\FunctionTok{library}\NormalTok{(car)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: carData
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'car'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:dplyr':
+## 
+##     recode
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:purrr':
+## 
+##     some
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{\textquotesingle{}Scenario 1.csv\textquotesingle{}}\NormalTok{)}
+\NormalTok{oneway}\OtherTok{\textless{}{-}} \FunctionTok{aov}\NormalTok{(No.of.items }\SpecialCharTok{\textasciitilde{}}\NormalTok{ POI, }\AttributeTok{data=}\NormalTok{data)}
+\FunctionTok{summary}\NormalTok{(oneway)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##              Df Sum Sq Mean Sq F value Pr(>F)
+## POI           4    127   31.75   1.025  0.393
+## Residuals   995  30827   30.98
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Consider the dataset. Which type of ANOVA can Scully use? (Justify why
+  the particular test)
+\item
+  What function(s) could have been used by Scully for ANOVA if he uses
+  the R programming language?
+\item
+  What does the output of this/these functions tell Scully? (Specify
+  hypotheses and what each column in the summary of the output means
+  considering 5\% significance)
+\end{enumerate}
+
+\hypertarget{problem-2-3-points}{%
+\subsubsection{Problem 2 (3 points)}\label{problem-2-3-points}}
+
+Peralta and Diaz find a member of the family, a certain Frank
+Pentangeli, through Doug Judy. They discovered that the \emph{famiglia}
+had altered this file resulting in invalid results. The original file
+was then recovered by the squad and was sent to Scully and Hitchcock for
+analysis. To their surprise they discovered that the file also had
+additional column of which gives the priority.
+
+The dataset has three columns:
+
+\begin{itemize}
+\tightlist
+\item
+  First column has the \textbf{Person of Interest(POI)} in the Mafia
+\item
+  Second column has the number of evidence items collected in particular
+  evidence locker (evidence lockers are present across the city and many
+  precincts have multiple squads working on the mafia, so one POI has
+  multiple entries).
+\item
+  Third column gives the \textbf{Priority} given to collect the evidence
+  by a particular squad with respect to a POI.
+\end{itemize}
+
+Read the dataset before moving on. For this problem, use the data file
+named \texttt{Scenario\ 2.csv} in the data repository.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{\textquotesingle{}Scenario 2.csv\textquotesingle{}}\NormalTok{)}
+\NormalTok{twoway }\OtherTok{\textless{}{-}} \FunctionTok{aov}\NormalTok{(No.of.items }\SpecialCharTok{\textasciitilde{}}\NormalTok{ POI }\SpecialCharTok{+}\NormalTok{ Priority, }\AttributeTok{data=}\NormalTok{data)}
+\FunctionTok{summary}\NormalTok{(twoway)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##              Df Sum Sq Mean Sq F value   Pr(>F)    
+## POI           4    317   79.29   2.890   0.0214 *  
+## Priority      4    690  172.53   6.289 5.35e-05 ***
+## Residuals   991  27186   27.43                     
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Consider the data. Which type of ANOVA can Scully use? (Justify why
+  the particular test)
+\item
+  What function(s) could have been used by Scully for the ANOVA if he
+  uses the R programming language?
+\item
+  What does the output of this/these functions tell Scully? (Specify
+  hypotheses and what each column in the summary of the output means
+  considering 5\% significance)
+\item
+  Hitchcock thinks that Scully has missed a task which completes the
+  ANOVA test. What should Scully have thought of? \emph{Hint:}
+  Philosophically, a hypothesis is a proposition made as a basis for
+  reasoning, without any assumption of its truth.
+\end{enumerate}
+
+\hypertarget{problem-3-1-point}{%
+\subsubsection{Problem 3 (1 point)}\label{problem-3-1-point}}
+
+Hitchcock also wanted to compare the number of items collected for each
+pair of Person of Interest and priority. He decided to follow the common
+practice of doing a \textbf{Tukey's HSD} . The
+\href{https://www.real-statistics.com/one-way-analysis-of-variance-anova/unplanned-comparisons/tukey-hsd/}{Tukey's
+Honestly-Significant-Difference}{[}TukeyHSD{]} test lets us see which
+groups are different from one another.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{TukeyHSD}\NormalTok{(twoway,}\AttributeTok{conf.level =} \FloatTok{0.95}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Worksheet_1a_Part2_files/figure-latex/unnamed-chunk-9-1.pdf}
+\includegraphics{Worksheet_1a_Part2_files/figure-latex/unnamed-chunk-9-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{TukeyHSD}\NormalTok{(oneway,}\AttributeTok{conf.level =} \FloatTok{0.95}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Worksheet_1a_Part2_files/figure-latex/unnamed-chunk-9-3.pdf}
+
+What insights did Hitchcock gain after doing the Tukey's HSD? (The
+\texttt{TukeyHSD} function can be used to do this test and the output of
+this function can be represented graphically using the \texttt{plot}
+function.)
+
+\end{document}
