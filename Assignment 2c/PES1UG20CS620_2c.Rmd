@@ -1,0 +1,227 @@
+---
+title: |
+  PES University, Bangalore
+  
+  Established under the Karnataka Act No. 16 of 2013
+subtitle: |
+  **UE20CS312 - Data Analytics**
+
+  **Worksheet 2c - Logistic Regression**
+  
+  Anushka Hebbar - anushkahebbar@pesu.pes.edu
+output: 
+  pdf_document:
+    fig_width: 6
+    fig_height: 3
+urlcolor: blue
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+Name : Adarsh Subhas Nayak
+SRN : PES1UG20CS620
+Roll No : 54
+Section : K
+
+### Prerequisites
+
+To download the data required for this worksheet, visit this [Github link](https://github.com/Data-Analytics-UE20CS312/Unit-2-Worksheets/tree/main/2c%20-%20Logistic%20Regression).
+Use the following libraries and read the dataset:
+```{r import, message=FALSE, warning=FALSE, results=TRUE}
+library(tidyverse)
+install.packages("InformationValue")
+library(InformationValue)
+char_preds <- read.csv('got_characters.csv')
+```
+
+# The Logit Model
+
+The linear regression techniques discussed so far are used to model the relationship between a quantitative response variable and one or more explanatory variables. When the response variable is categorical, other techniques are more suited to the task of classification.
+
+The **logit model**, or **logistic model** models the probability, $p$, that a dichotomous (binary), dependent variable takes on one of two possible outcomes. It achieves this by setting the natural logarithm of the odds of the response variable, called the *log-odds* or *logit*, as a linear function of the explanatory variables.
+
+$$Z_i = \text{log}\left( \frac{p}{1-p}\right) = \beta_0 + \beta_1x + ... + \beta_nx_n \space \text{ for } \space p \in (0,1)$$
+
+Here, $Z_i$ is the log-odds of the response variable taking on a value with probability $p$. 
+
+**Logistic regression** is an algorithm that estimates the parameters, or coefficients, of the linear combination of the logit model. In this worksheet, we will classify a certain binary feature of a dataset using logistic regression.
+
+# A Song of Ice and Fire - GoT Character Dataset
+
+_A Song of Ice and Fire_ by George RR Martin is a series of epic fantasy novels that is popularly known for its TV show adaptation, _Game of Thrones_. The show is well known for its vastly complicated political landscape, large number of characters, and its frequent character deaths.
+
+The given dataset contains comprehensive information on characters from the book series till the 5th book, _A Dance with Dragons_. The data was created by the team at [A Song of Ice and Data](https://got.show/machine-learning-algorithm-predicts-death-game-of-thrones) who scraped it from [the Wiki of Ice and Fire](http://awoiaf.westeros.org/). 
+
+This worksheet will focus on using Logistic Regression to predict whether a character in the SoIaF world remains alive by the end of the 5th book, which is captured by the feature `actual`. 
+
+### Data Dictionary
+
+	actual - Whether the character is alive in the consequent books 
+			(0 if dead, 1 if alive)
+	name - Name of the character
+	title - Character's title
+	male - Gender of the character (1 if male, 0 otherwise)
+	culture - Culture the character is from
+	dateofBirth - Character's DoB
+	mother - Name of the character's mother
+	father - Name of the character's father
+	heir - Name of the character's heir
+	spouse - Name of the character's spouse
+	book1 - Whether the character appears in Book 1, Game of Thrones
+	book2 - Whether the character appears in Book 2, A Clash of Kings
+	book3 - Whether the character appears in Book 3, A Storm of Swords
+	book4 - Whether the character appears in Book 4, A Feast for Crows
+	book5 - Whether the character appears in Book 5, A Dance with Dragons
+	isAliveMother - Whether the character's mother is alive
+	isAliveFather - Whether the character's father is alive
+	isAliveHeir - Whether the character's heir is alive
+	isAliveSpouse - Whether the character's spouse is alive
+	isMarried - Whether the character is married
+	isNoble - Whether the character belongs to a noble family
+	boolDeadRelations - Whether one of the character's relations is dead
+	numDeadRelations - Count of the character's relations that are dead
+	isPopular - Whether the character is popular 
+	popularity - Score of the character's popularity
+
+# Problems
+
+### Problem 1 (1 point)
+
+How many characters from the SoIaF world does this dataset contain information on? 
+Calculate the percentage of missing data for each column of the dataset and print them out in descending order as a dataframe. 
+
+*Hint:* Make sure to capture data from both missing values in numeric fields and empty strings in descriptive fields. Convert all missing placeholders to type NA.
+```{r}
+
+sprintf("The no. of characters listed in the data = %d", nrow(char_preds))
+
+char_preds[char_preds == "" | char_preds == " "] <- NA
+df <- data.frame(colSums(is.na(char_preds)) / nrow(char_preds) * 100)
+colnames(df) <- c('% Missing')
+df$Columns <- rownames(df)
+rownames(df) <- NULL
+
+
+new_df <- df[order(df$'% Missing', decreasing = TRUE),]
+rownames(new_df) <- NULL
+new_df
+```
+### Problem 2 (2 points)
+
+#### Step 1
+What are the inferences you can draw from the output dataframe of the previous problem? How can we handle columns with extremely high proportions of missing data before moving on?
+
+*Hint:* Does missing data in a column tell you something about the target variable (`actual`)? If not, set a missing percentage threshold of 80%, deeming the column as having insufficient data, and drop the column. 
+```{r}
+remove <- new_df[new_df$'% Missing' > 80,'Columns']
+char_preds <- char_preds[!names(char_preds) %in% remove]
+ggplot(char_preds, aes(x=age)) + geom_bar()  
+get_mode <- function(x) {
+  mode0 <- names(which.max(table(x)))
+  if(is.numeric(x)) return(as.numeric(mode0))
+  mode0
+}
+char_categorical <- c('culture')
+char_preds[, char_categorical] <- lapply(char_preds[, char_categorical], as.factor)
+char_preds[, char_categorical] <- sapply(char_preds[, char_categorical], unclass)
+char_preds[is.na(char_preds)] = -1
+char_preds[is.na(char_preds$age)] <- mean(char_preds$age, na.rm = TRUE)
+char_preds[is.na(char_preds$dateOfBirth)] <- get_mode(char_preds$dateOfBirth)
+
+```
+
+#### Step 2
+Impute missing data in the remaining numeric features with a reasonable statistic. Make sure you observe the distribution of the data in the columns to pick out a reasonable statistic. For categorical variables, convert the columns to numeric features. _Hint: Use the `unclass` function and impute missing categorical feature values with a `-1`._
+
+### Bonus 
+After plotting the `age` column, do you notice any discrepancies in the graph? What do you think might have given rise to a such a distribution?
+
+### Problem 3 (2 points)
+
+#### Step 1: Check for Class Bias 
+Ideally, the proportion of both classes of the target variable should be the same. Is this so in the case of the target variable in this dataset? 
+
+#### Step 2: Create Training and Test Samples 
+Perform undersampling in case of a class bias in the dataset. Create train and test splits. 
+
+_Hint: To create the training sample set, sample 70% of the class with lesser rows and sample the same number from the other class. Use the remaining rows from both classes to create the test split._
+```{r}
+
+table(char_preds$actual)
+input_ones <- char_preds[which(char_preds$actual == 1), ]
+input_zeros <- char_preds[which(char_preds$actual == 0), ]  # all 0's
+set.seed(100)  
+input_ones_training_rows <- sample(1:nrow(input_ones), 0.7*nrow(input_zeros)) 
+input_zeros_training_rows <- sample(1:nrow(input_zeros), 0.7*nrow(input_zeros))  
+training_ones <- input_ones[input_ones_training_rows, ]  
+training_zeros <- input_zeros[input_zeros_training_rows, ]
+trainingData <- rbind(training_ones, training_zeros)
+trainingData <- trainingData[sample(1:nrow(trainingData)), ]
+
+
+
+test_ones <- input_ones[-input_ones_training_rows, ]
+test_zeros <- input_zeros[-input_zeros_training_rows, ]
+testData <- rbind(test_ones, test_zeros)
+testData <- testData[sample(1:nrow(testData)), ]
+
+
+table(trainingData$actual)
+table(testData$actual)
+
+```
+### Problem 4 (3 points)
+
+#### Step 1: Build the Logisitic Regression Model 
+Train a logistic regression model to predict whether a character is dead by Book 5 (feature: `actual`) using the training split. Use the `summary` function to print the beta coefficients, p values and other statistics. Predict characters' deaths on the test split available.
+
+### Step 2: Decide on the Optimal Prediction Probability Cutoff
+The default cutoff prediction probability score is 0.5 or the ratio of 1’s and 0’s in the training data. But sometimes, tuning the probability cutoff can improve the accuracy in both the training and test samples. Compute the optimal cutoff score (using the test split) that minimizes the misclassification error for the trained model.
+
+_Hint: Use a function from the InformationValue library to perform this task._
+
+```{r}
+logitmod <- glm(actual ~ age + culture + male + book1 + 
+                  isMarried + boolDeadRelations + isPopular + popularity, 
+                family = binomial(link="logit"), data=trainingData)
+
+
+summary(logitmod)
+
+
+predicted <- plogis(predict(logitmod, testData))  # predicted scores
+
+
+library(InformationValue)
+optCutOff <- optimalCutoff(testData$actual, predicted)[1] 
+optCutOff
+
+
+
+misClassError(testData$actual, predicted, threshold = optCutOff)
+sensitivity(testData$actual, predicted, threshold = optCutOff)
+specificity(testData$actual, predicted, threshold = optCutOff)
+confusionMatrix(testData$actual, predicted, threshold = optCutOff)
+plotROC(testData$actual, predicted)
+
+
+```
+### Problem 5 (2 points)
+Using the optimal cutoff probability, compute and print the following using the predictions on the test set: 
+
+1. Misclassification error
+2. Confusion Matrix
+3. Sensitivity
+4. Specificity
+
+Plot the ROC Curve (Receiver Operating Characteristics Curve). What is the area under the curve?
+
+_Hint: Use predefined functions for this problem._
+```{r}
+misClassError(testData$actual, predicted)
+sensitivity(testData$actual, predicted)
+specificity(testData$actual, predicted)
+confusionMatrix(testData$actual, predicted)
+
+plotROC(testData$actual, predicted)
+```
